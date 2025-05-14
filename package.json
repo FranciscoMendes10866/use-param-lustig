@@ -1,0 +1,51 @@
+{
+  "name": "use-param-lustig",
+  "version": "0.1.0",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "import": "./dist/index.mjs"
+    }
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs,esm --dts --minify --treeshake --shims --clean",
+    "lint": "tsc"
+  },
+  "keywords": [
+    "react",
+    "query-params",
+    "url",
+    "validation",
+    "compression",
+    "typescript",
+    "hook"
+  ],
+  "devDependencies": {
+    "@types/react": "^19.1.4",
+    "@types/react-dom": "^19.1.5",
+    "tsup": "^8.4.0",
+    "typescript": "^5.8.3"
+  },
+  "peerDependencies": {
+    "react": ">=18.2.0",
+    "react-dom": ">=18.2.0"
+  },
+  "license": "MIT",
+  "description": "A simple React hook for managing query parameters with validation, compression, and URL syncing.",
+  "homepage": "https://github.com/FranciscoMendes10866/use-param-lustig#README",
+  "bugs": {
+    "url": "https://github.com/FranciscoMendes10866/use-param-lustig/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FranciscoMendes10866/use-param-lustig.git"
+  },
+  "author": {
+    "name": "Francisco Mendes",
+    "email": "fmendes_dev@protonmail.ch",
+    "url": "https://github.com/FranciscoMendes10866"
+  }
+}
