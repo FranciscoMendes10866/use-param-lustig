@@ -22,43 +22,36 @@ npm install use-param-lustig
 
 ### Usage
 
-The `useQueryParams` hook allows you to manage query parameters in a React application. It requires a validator (e.g., using a library like Zod or Valibot) to define the schema for your query parameters.
+The `useQueryParams` hook simplifies managing query parameters in React applications. It requires a validator (e.g., Zod or Valibot) to define the schema for your query parameters.
+
+`Validator` abstraction deserializes the query parameter data, but a transformation step is needed to ensure runtime data integrity. The schema must support both URL and runtime, for types like integers, booleans and others.
 
 #### Example
 
 ```jsx
-import { useQueryParams } from "react-query-params-hook";
+import { useQueryParams } from "use-param-lustig";
 import * as v from "valibot";
 
 const querySchema = v.object({
-  search: v.optional(v.string()),
+  search: v.optional(v.string(), ""),
   sort: v.optional(
-    v.union([
-      v.pipe(
-        v.string(),
-        v.regex(/^[a-zA-Z]+:(asc|desc)$/i),
-        v.transform((content) => {
-          const [field, order] = content.split(":");
-          return { field, order };
-        }),
-        v.object({
-          field: v.string(),
-          order: v.union([v.literal("asc"), v.literal("desc")]),
-        }),
-      ),
-      v.object({
-        field: v.string(),
-        order: v.union([v.literal("asc"), v.literal("desc")]),
-      }),
-    ]),
+    v.object({
+      field: v.string(),
+      order: v.union([v.literal("asc"), v.literal("desc")]),
+    }),
+    { field: "createdAt", order: "desc" },
   ),
   filters: v.optional(
     v.array(
       v.object({
-        key: v.string(),
+        key: v.pipe(
+          v.union([v.string(), v.number()]),
+          v.transform((input) => Number(input)),
+        ),
         value: v.string(),
       }),
     ),
+    [],
   ),
 });
 
@@ -96,10 +89,7 @@ function MyComponent() {
         onClick={() =>
           setQueryParams((prevParams) => ({
             ...prevParams,
-            filters: [
-              ...prevParams.filters,
-              { key: "category", value: "electronics" },
-            ],
+            filters: [...prevParams.filters, { key: 1, value: "electronics" }],
           }))
         }
       >
@@ -114,7 +104,7 @@ function MyComponent() {
 #### Example with URL compression
 
 ```jsx
-import { useQueryParams } from "react-query-params-hook";
+import { useQueryParams } from "use-param-lustig";
 import * as v from "valibot";
 import lzString from "lz-string";
 

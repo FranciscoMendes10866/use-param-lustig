@@ -1,4 +1,4 @@
-import { type IDataCompressor, DataCompressor } from "./data-processor";
+import { type IDataCompressor, DataCompressor } from "./data-compressor";
 import {
   type IQueryStringConverter,
   QueryStringConverter,
